@@ -13,13 +13,7 @@ function getTotalAccountsCount(accounts) {
 }
 
 function getBooksBorrowedCount(books) {
-  let count = 0;
-  books.forEach(book => {
-    if( isBorrowed(book)){
-      count += 1;
-    }
-  });
-  return count;
+  return books.reduce((total, book) =>isBorrowed(book) ? total + 1 : total, 0);
 }
 
 function getMostCommonGenres(books) {
@@ -84,8 +78,9 @@ function getMostPopularAuthors(books, authors) {
   //build results array using authorList
   Object.keys(authorList).forEach(author => {
     let authorName = authors.find(authorElement => authorElement["id"] == author).name;
-    let authorFullName = `${authorName.first} ${authorName.last}`; 
-    results.push({"name": authorFullName, "count" : authorList[author]});
+    let name = `${authorName.first} ${authorName.last}`; 
+    let count = authorList[author];
+    results.push({name, count});
   })
 
   //sort results list
